@@ -17,7 +17,6 @@ This module provides the main table management class.
 
 from xml.sax.saxutils import quoteattr
 
-from zope.component import getAdapters, getMultiAdapter
 from zope.interface import implementer
 from zope.location import Location
 
@@ -107,7 +106,8 @@ class Table(Location):
     @property
     def values(self):
         """Get table values"""
-        adapter = getMultiAdapter((self.context, self.request, self), IValues)
+        registry = self.request.registry
+        adapter = registry.getMultiAdapter((self.context, self.request, self), IValues)
         return adapter.values
 
     # CSS helpers
@@ -147,7 +147,8 @@ class Table(Location):
 
     def setup_columns(self):
         """Setup columns"""
-        cols = list(getAdapters((self.context, self.request, self), IColumn))
+        registry = self.request.registry
+        cols = list(registry.getAdapters((self.context, self.request, self), IColumn))
         # use the adapter name as column name
         return [name_column(col, name) for name, col in cols]
 
@@ -240,9 +241,10 @@ class Table(Location):
     def update_batch(self):
         """Update batch, if required"""
         if IBatch.providedBy(self.rows):
-            self.batch_provider = getMultiAdapter((self.context, self.request, self),
-                                                  IBatchProvider,
-                                                  name=self.batch_provider_name)
+            registry = self.request.registry
+            self.batch_provider = registry.getMultiAdapter((self.context, self.request, self),
+                                                           IBatchProvider,
+                                                           name=self.batch_provider_name)
             self.batch_provider.update()
 
     def is_selected_row(self, row):

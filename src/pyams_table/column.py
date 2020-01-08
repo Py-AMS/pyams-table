@@ -18,7 +18,6 @@ This module provides base classes and adapters for table columns management.
 import html
 from urllib.parse import urlencode
 
-from zope.component import queryMultiAdapter
 from zope.dublincore.interfaces import IZopeDublinCore
 from zope.interface import implementer
 from zope.location import Location
@@ -103,8 +102,9 @@ class Column(Location):
 
     def render_head_cell(self):
         """Header cell content."""
-        header = queryMultiAdapter((self.context, self.request, self.table, self),
-                                   IColumnHeader)
+        registry = self.request.registry
+        header = registry.queryMultiAdapter((self.context, self.request, self.table, self),
+                                            IColumnHeader)
         if header:
             header.update()
             # HTML escaping is the responsibility of IColumnHeader.render
