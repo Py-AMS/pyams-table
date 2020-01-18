@@ -50,6 +50,10 @@ Sample data setup
     >>> from pyams_table.testing import setup_adapters
 
     >>> config = setUp()
+
+    >>> from pyams_table import includeme as include_table
+    >>> include_table(config)
+
     >>> setup_adapters(config.registry)
     >>> root = {}
     
@@ -664,5 +668,8 @@ the link should allow to switch again to ascending:
       title="Sort">Title</a></th>
     ...
     </table>
+
+
+Tests cleanup:
 
     >>> tearDown()
