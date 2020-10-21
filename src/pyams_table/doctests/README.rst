@@ -49,7 +49,7 @@ Sample data setup
     >>> from pyramid.testing import setUp, tearDown
     >>> from pyams_table.testing import setup_adapters
 
-    >>> config = setUp()
+    >>> config = setUp(hook_zca=True)
 
     >>> from pyams_table import includeme as include_table
     >>> include_table(config)

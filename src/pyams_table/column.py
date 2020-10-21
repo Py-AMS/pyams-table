@@ -430,7 +430,16 @@ class EMailColumn(LinkColumn, GetAttrColumn):
 
 
 def ensure_list(item):
-    """Convert given item to list"""
+    """Convert given item to list
+
+    >>> from pyams_table.column import ensure_list
+    >>> ensure_list(1)
+    [1]
+    >>> ensure_list('string')
+    ['string']
+    >>> ensure_list(['a', 'b', 'c'])
+    ['a', 'b', 'c']
+    """
     if not isinstance(item, (list, tuple)):
         return [item]
     return item

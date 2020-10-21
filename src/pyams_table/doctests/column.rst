@@ -12,7 +12,7 @@ Sample data setup
   >>> from pyramid.testing import setUp, tearDown
   >>> from pyams_table.testing import setup_adapters
 
-  >>> config = setUp()
+  >>> config = setUp(hook_zca=True)
   >>> setup_adapters(config.registry)
   >>> root = {}
 
@@ -622,6 +622,22 @@ And test the attribute access:
   'missing'
 
 
+I18nGetAttrColumn
+-----------------
+
+The ``I18nGetAttrColumn`` column can be used to get a translated value of the item:
+
+    >>> from pyams_table import _
+    >>> class I18nGetAttrColumn(column.I18nGetAttrColumn):
+    ...     def get_value(self, obj):
+    ...         return _("I18n value")
+
+    >>> i18nTable = table.Table(container, request)
+    >>> i18nColumn = column.add_column(i18nTable, I18nGetAttrColumn, 'i18n')
+    >>> i18nColumn.render_cell(protectedItem)
+    'I18n value'
+
+
 GetItemColumn
 -------------
 
@@ -631,7 +647,7 @@ or anything that implements that.
 It also provides a ``default_value`` in case an exception happens.
 
 Dict-ish
-.........
+........
 
   >>> sampleDictData = [
   ...     dict(name='foo', value=1),
@@ -1270,5 +1286,65 @@ And this one will generate a ``edit.html`` link for each item:
       </tr>
     </tbody>
   </table>
+
+
+SelectedItemColumn
+------------------
+
+The ``SelectedItemColumn`` can be used to provide a column which will allow to select an
+item from a request param:
+
+  >>> class SelectedItemTable(table.Table):
+  ...     css_class_sorted_on = None
+  ...
+  ...     def setup_columns(self):
+  ...         return [
+  ...             column.add_column(self, column.SelectedItemColumn, 'link',
+  ...                              weight=1)
+  ...         ]
+
+  >>> selectedItemTable = SelectedItemTable(container, request)
+  >>> selectedItemTable.__parent__ = container
+  >>> selectedItemTable.__name__ = 'selectedItemTable.html'
+  >>> selectedItemTable.update()
+  >>> print(selectedItemTable.render())
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="http://example.com/selectedItemTable.html?table-link-0-selected-items=first">first</a></td>
+      </tr>
+      <tr>
+        <td><a href="http://example.com/selectedItemTable.html?table-link-0-selected-items=fourth">fourth</a></td>
+      </tr>
+      <tr>
+        <td><a href="http://example.com/selectedItemTable.html?table-link-0-selected-items=second">second</a></td>
+      </tr>
+      <tr>
+        <td><a href="http://example.com/selectedItemTable.html?table-link-0-selected-items=third">third</a></td>
+      </tr>
+      <tr>
+        <td><a href="http://example.com/selectedItemTable.html?table-link-0-selected-items=zero">zero</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  >>> selectedItemTable.selected_items
+  []
+
+  >>> request = DummyRequest(params={'table-link-0-selected-items': 'second'})
+  >>> selectedItemTable = SelectedItemTable(container, request)
+  >>> selectedItemTable.__parent__ = container
+  >>> selectedItemTable.__name__ = 'selectedItemTable.html'
+  >>> selectedItemTable.update()
+  >>> selectedItemTable.selected_items
+  [<pyams_table.tests.test_utilsdocs.Content object at 0x...>]
+
+
+Tests cleanup:
 
   >>> tearDown()

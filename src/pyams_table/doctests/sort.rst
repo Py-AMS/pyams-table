@@ -12,7 +12,7 @@ value for sorting:
   >>> from pyramid.testing import setUp, tearDown, DummyRequest
   >>> from pyams_table.testing import setup_adapters
 
-  >>> config = setUp()
+  >>> config = setUp(hook_zca=True)
   >>> setup_adapters(config.registry)
   >>> root = {}
 

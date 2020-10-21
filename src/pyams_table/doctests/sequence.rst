@@ -9,7 +9,7 @@ we added the other 1000 items:
   >>> from pyramid.testing import setUp, tearDown, DummyRequest
   >>> from pyams_table.testing import setup_adapters
 
-  >>> config = setUp()
+  >>> config = setUp(hook_zca=True)
   >>> setup_adapters(config.registry)
   >>> root = {}
 
