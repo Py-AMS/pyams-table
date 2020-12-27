@@ -163,10 +163,16 @@ class ITable(IContentProvider):
         """Render the table body rows."""
 
     def render_row(self, row, css_class=None):
-        """Render the table body rows."""
+        """Render a single table row."""
+
+    def render_json_row(self, row):
+        """Render a single table row content in JSON"""
 
     def render_cell(self, item, column, colspan=0):
         """Render a single table body cell."""
+
+    def render_json_cell(self, item, column):
+        """Render a single table body cell content in JSON"""
 
     def render(self):  # pylint:disable=arguments-differ
         """Plain render method without keyword arguments."""

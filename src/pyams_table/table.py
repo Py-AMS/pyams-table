@@ -318,6 +318,10 @@ class Table(Location):
         cells = [self.render_cell(item, col, colspan) for item, col, colspan in row]
         return '\n    <tr%s>%s\n    </tr>' % (css_class, ''.join(cells))
 
+    def render_json_row(self, row):
+        """Render given row in JSON"""
+        return [self.render_json_cell(item, col) for item, col, colspan in row]
+
     def render_cell(self, item, column, colspan=0):
         """Render cell for item and column"""
         if INoneCell.providedBy(column):
@@ -332,6 +336,12 @@ class Table(Location):
             colspan_str,
             column.render_cell(item),
         )
+
+    def render_json_cell(self, item, column):
+        """Render cell in JSON for item and column"""
+        if INoneCell.providedBy(column):
+            return None
+        return str(column.render_cell(item))
 
     def update(self):
         """Update table contents"""
