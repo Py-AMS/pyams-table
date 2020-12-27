@@ -26,7 +26,7 @@ from pyams_utils.url import absolute_url
 
 
 @adapter_config(name='batch',
-                context=(Interface, IRequest, ITable),
+                required=(Interface, IRequest, ITable),
                 provides=IBatchProvider)
 class BatchProvider:
     """Batch content provider

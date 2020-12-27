@@ -31,7 +31,7 @@ class ValuesMixin(ContextRequestViewAdapter):
     """Mixin for different value adapters"""
 
 
-@adapter_config(context=(IContainer, IRequest, ITable), provides=IValues)
+@adapter_config(required=(IContainer, IRequest, ITable), provides=IValues)
 class ValuesForContainer(ValuesMixin):
     """Values adapter from a simple IContainer"""
 
@@ -41,7 +41,7 @@ class ValuesForContainer(ValuesMixin):
         return self.context.values()
 
 
-@adapter_config(context=(Interface, IRequest, ISequenceTable), provides=IValues)
+@adapter_config(required=(Interface, IRequest, ISequenceTable), provides=IValues)
 class ValuesForSequence(ValuesMixin):
     """Values adapter from a simple sequence table"""
 
