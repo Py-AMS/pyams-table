@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.2
+-----
+ - updated Gitlab-CI configuration
+
 1.1.1
 -----
  - updated Gitlab-CI configuration
