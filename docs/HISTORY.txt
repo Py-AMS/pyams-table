@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.1.1
+-----
+ - updated Gitlab-CI configuration
+ - removed Travis-CI configuration
+
 1.1.0
 -----
  - added methods to render cells and rows contents in JSON format
