@@ -328,6 +328,13 @@ table too:
     </tbody>
     </table>
 
+We can render a single row in JSON; this can be useful in AJAX applications to be able to
+update a single table row:
+
+    >>> row = private_table.setup_row(container['first'])
+    >>> private_table.render_json_row(row)
+    ['Title: First', 'First']
+
 
 Cascading Style Sheet
 ---------------------
@@ -491,7 +498,7 @@ Now we can define our table and use the custom cell renderer:
     ...                              css_classes = {'th':'thCol', 'td':'tdCol'})
     ...             ]
 
-Add some more content::
+Add some more content:
 
     >>> container[u'fourth'] = Content('Fourth', 4)
     >>> container[u'zero'] = Content('Zero', 0)
